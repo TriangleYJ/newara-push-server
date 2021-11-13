@@ -30,7 +30,7 @@ app.get('/api/pwa', (req, res) => {
 
 // 1. service-worker의 pushManager가 Registration을 하기 위한  키를 받아오는 GET
 app.get('/api/pwa/key', (req, res) => {
-    console.log(`publick key sent: ${vapidKeys.publicKey}`);
+    console.log(`publick key sent: ${vapid.publicKey}`);
     res.send({
         key: vapid.publicKey
     });
@@ -46,11 +46,28 @@ app.post('/api/pwa/subscribe', (req, res) => {
 
 // 3. 등록된 service-worker들에게 푸시를 보내는 POST
 app.post('/api/pwa/notify', (req, res) => {
+    const title = req.params.title
+    const message = req.params.message
+
+    const options = {
+        body : message,
+        icon : '/img/icons/ara-pwa-192.png',
+        image : '/img/icons/ara-pwa-192.png',
+        dir : 'ltr',
+        lang : 'ko-KR',
+        vibrate : [100, 50, 200],
+        badge : '/img/icons/ara-pwa-192.png',
+        tag : 'confirm-notificaction',
+        renotify : true,
+        actions : [
+          { action : 'confirm', title : '확인하기', icon : '/img/icons/ara-pwa-192.png' },
+          { action : 'cancel', title : '취소', icon : '/img/icons/ara-pwa-192.png' },
+        ]
+    };
     console.log(`-------------------------------------------`);
-    console.log(`notify requested : ${JSON.stringify(req.body)}`);
     let payload = {};
-    payload.title = req.body.title;
-    payload.message = req.body.message;
+    payload.title = title;
+    payload.option = options;
 
     for(const subs of temp_subs){
         webpush.sendNotification(subs, JSON.stringify(payload))
