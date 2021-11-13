@@ -52,7 +52,6 @@ app.get('/api/pwa/notify', (req, res) => {
     const options = {
         body : message,
         icon : '/img/icons/ara-pwa-192.png',
-        image : '/img/icons/ara-pwa-192.png',
         dir : 'ltr',
         lang : 'ko-KR',
         vibrate : [100, 50, 200],
@@ -60,8 +59,8 @@ app.get('/api/pwa/notify', (req, res) => {
         tag : 'confirm-notificaction',
         renotify : true,
         actions : [
-          { action : 'confirm', title : '확인하기', icon : '/img/icons/ara-pwa-192.png' },
-          { action : 'cancel', title : '취소', icon : '/img/icons/ara-pwa-192.png' },
+          { action : 'confirm', title : '확인'},
+          { action : 'cancel', title : '취소'},
         ]
     };
     console.log(`-------------------------------------------`);
