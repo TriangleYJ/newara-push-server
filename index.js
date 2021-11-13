@@ -17,7 +17,7 @@ const corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 const vapid = webpush.generateVAPIDKeys();
