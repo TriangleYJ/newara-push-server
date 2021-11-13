@@ -67,7 +67,7 @@ app.get('/api/pwa/notify', (req, res) => {
     console.log(`-------------------------------------------`);
     let payload = {};
     payload.title = title;
-    payload.option = options;
+    payload.options = options;
     console.log(payload)
 
     for(const subs of temp_subs){
