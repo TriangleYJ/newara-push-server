@@ -46,8 +46,8 @@ app.post('/api/pwa/subscribe', (req, res) => {
 
 // 3. 등록된 service-worker들에게 푸시를 보내는 POST
 app.get('/api/pwa/notify', (req, res) => {
-    const title = req.params.title
-    const message = req.params.message
+    const title = req.query.title
+    const message = req.query.message
 
     const options = {
         body : message,
@@ -68,6 +68,7 @@ app.get('/api/pwa/notify', (req, res) => {
     let payload = {};
     payload.title = title;
     payload.option = options;
+    console.log(payload)
 
     for(const subs of temp_subs){
         if (subs && subs.endpoint){
