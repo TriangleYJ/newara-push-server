@@ -50,6 +50,8 @@ const sendNotiAll = (title, message, res) => {
                 console.error(`notification error : ${err}`);
                 res.sendStatus(500);
             });
+        } else {
+            res.sendStats(201);
         }
     }
 }
