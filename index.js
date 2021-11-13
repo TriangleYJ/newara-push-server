@@ -19,36 +19,7 @@ const corsOptions = {
 
 app.use(cors());
 
-
-const vapid = webpush.generateVAPIDKeys();
-webpush.setVapidDetails('mailto:triangle@sparcs.org', vapid.publicKey, vapid.privateKey);
-
-app.get('/api/pwa', (req, res) => {
-        console.log("pwa")
-        res.send("This is a webpush server");
-});
-
-// 1. service-worker의 pushManager가 Registration을 하기 위한  키를 받아오는 GET
-app.get('/api/pwa/key', (req, res) => {
-    console.log(`publick key sent: ${vapid.publicKey}`);
-    res.send({
-        key: vapid.publicKey
-    });
-})
-
-// 2. 구독 POST
-const temp_subs = [];
-app.post('/api/pwa/subscribe', (req, res) => {
-    temp_subs.push(req.body.subscription);
-    console.log(`subscribed : ${JSON.stringify(req.body.subscription)}`);
-    res.send('Subscribed');
-});
-
-// 3. 등록된 service-worker들에게 푸시를 보내는 POST
-app.get('/api/pwa/notify', (req, res) => {
-    const title = req.query.title
-    const message = req.query.message
-
+const sendNotiAll = (title, message) => {
     const options = {
         body : message,
         icon : '/img/icons/ara-pwa-192.png',
@@ -81,8 +52,49 @@ app.get('/api/pwa/notify', (req, res) => {
             });
         }
     }
+}
+
+const vapid = webpush.generateVAPIDKeys();
+webpush.setVapidDetails('mailto:triangle@sparcs.org', vapid.publicKey, vapid.privateKey);
+
+app.get('/api/pwa', (req, res) => {
+        console.log("pwa")
+        res.send("This is a webpush server");
+});
+
+// 1. service-worker의 pushManager가 Registration을 하기 위한  키를 받아오는 GET
+app.get('/api/pwa/key', (req, res) => {
+    console.log(`publick key sent: ${vapid.publicKey}`);
+    res.send({
+        key: vapid.publicKey
+    });
+})
+
+// 2. 구독 POST
+const temp_subs = [];
+app.post('/api/pwa/subscribe', (req, res) => {
+    temp_subs.push(req.body.subscription);
+    console.log(`subscribed : ${JSON.stringify(req.body.subscription)}`);
+    res.send('Subscribed');
+});
+
+// 3. 등록된 service-worker들에게 푸시를 보내는 POST
+app.get('/api/pwa/notify', (req, res) => {
+    const title = req.query.title
+    const message = req.query.message
+
+    sendNotiAll(title, message)
 });
     
+app.get('api/pwa/writepost', (req, res) => {
+    let id = req.query.borad_id
+    let title = req.query.title
+
+    console.log(id + " "+ title)
+    sendNotiAll(`새로운 글이 올라왔어요`, title)
+    res.send("ok");
+})
+
 app.listen(port, () => {
     console.log(`server is listening at localhost`);
 });
