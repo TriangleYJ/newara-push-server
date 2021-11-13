@@ -86,7 +86,7 @@ app.get('/api/pwa/notify', (req, res) => {
     sendNotiAll(title, message)
 });
     
-app.get('api/pwa/writepost', (req, res) => {
+app.get('/api/pwa/writepost', (req, res) => {
     let id = req.query.borad_id
     let title = req.query.title
 
