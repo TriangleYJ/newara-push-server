@@ -19,7 +19,7 @@ const corsOptions = {
 
 app.use(cors());
 
-const sendNotiAll = (title, message) => {
+const sendNotiAll = (title, message, res) => {
     const options = {
         body : message,
         icon : '/img/icons/ara-pwa-192.png',
@@ -83,7 +83,7 @@ app.get('/api/pwa/notify', (req, res) => {
     const title = req.query.title
     const message = req.query.message
 
-    sendNotiAll(title, message)
+    sendNotiAll(title, message, res)
 });
     
 app.get('/api/pwa/writepost', (req, res) => {
@@ -91,8 +91,7 @@ app.get('/api/pwa/writepost', (req, res) => {
     let title = req.query.title
 
     console.log(id + " "+ title)
-    sendNotiAll(`새로운 글이 올라왔어요`, title)
-    res.send("ok");
+    sendNotiAll(`새로운 글이 올라왔어요`, title, res)
 })
 
 app.listen(port, () => {
