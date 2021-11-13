@@ -45,7 +45,7 @@ app.post('/api/pwa/subscribe', (req, res) => {
 });
 
 // 3. 등록된 service-worker들에게 푸시를 보내는 POST
-app.post('/api/pwa/notify', (req, res) => {
+app.get('/api/pwa/notify', (req, res) => {
     const title = req.params.title
     const message = req.params.message
 
@@ -70,14 +70,16 @@ app.post('/api/pwa/notify', (req, res) => {
     payload.option = options;
 
     for(const subs of temp_subs){
-        webpush.sendNotification(subs, JSON.stringify(payload))
-        .then( (response) => {
-            console.log('sent notification');
-            res.sendStatus(201);
-        }).catch( (err) => {
-            console.error(`notification error : ${err}`);
-            res.sendStatus(500);
-        });
+        if (subs && subs.endpoint){
+            webpush.sendNotification(subs, JSON.stringify(payload))
+            .then( (response) => {
+                console.log('sent notification');
+                res.sendStatus(201);
+            }).catch( (err) => {
+                console.error(`notification error : ${err}`);
+                res.sendStatus(500);
+            });
+        }
     }
 });
     
