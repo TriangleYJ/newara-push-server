@@ -50,7 +50,7 @@ const sendNotiAll = (title, message, res) => {
             });
         }
     }
-    res.sendStats(201);
+    res.sendStatus(201);
 }
 
 const vapid = webpush.generateVAPIDKeys();
