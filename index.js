@@ -45,15 +45,12 @@ const sendNotiAll = (title, message, res) => {
             webpush.sendNotification(subs, JSON.stringify(payload))
             .then( (response) => {
                 console.log('sent notification');
-                res.sendStatus(201);
             }).catch( (err) => {
                 console.error(`notification error : ${err}`);
-                res.sendStatus(500);
             });
-        } else {
-            res.sendStats(201);
         }
     }
+    res.sendStats(201);
 }
 
 const vapid = webpush.generateVAPIDKeys();
